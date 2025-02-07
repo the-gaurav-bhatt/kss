@@ -1,7 +1,4 @@
 // app/programs/program-card-list.tsx
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Book, Heart, Users, Lightbulb, Brain } from "lucide-react";
@@ -13,41 +10,17 @@ const iconMap = {
   Lightbulb,
   Brain,
 };
-
-// Variants for Framer Motion
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      // Stagger the child card animations
-      staggerChildren: 0.15,
-      when: "beforeChildren",
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
 export function ProgramCardList({ programs }: { programs: Program[] }) {
   return (
-    <motion.div
+    <div
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+
     >
       {programs.map((program) => {
         const Icon = iconMap[program.iconName];
 
         return (
-          <motion.div key={program.title} variants={cardVariants}>
+          <div key={program.title} >
             <Link
               href={program.href}
               aria-label={`Read more about ${program.title}`}
@@ -73,9 +46,9 @@ export function ProgramCardList({ programs }: { programs: Program[] }) {
                 <p className="text-white/90">{program.description}</p>
               </div>
             </Link>
-          </motion.div>
+          </div>
         );
       })}
-    </motion.div>
+    </div>
   );
 }

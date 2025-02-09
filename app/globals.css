@@ -1,7 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.animated-element {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+/* Add this to your globals.css or a similar stylesheet */
+.skeleton {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0)
+  );
+  background-size: 200% 100%; /* Double the width for the animation */
+  animation: shimmer 1.5s infinite linear;
+}
 
+@keyframes shimmer {
+  0% {
+    background-position: 150% 50%; /* Start off-screen to the right */
+  }
+  100% {
+    background-position: -50% 50%; /* End off-screen to the left */
+  }
+}
+
+/* Optimize image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
 :root {
   --primary: 210 100% 35%; /* Modern blue */
   --primary-foreground: 210 40% 98%;

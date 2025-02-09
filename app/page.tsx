@@ -3,12 +3,37 @@
 // import { motion } from "framer-motion";
 import { Heart, Stethoscope } from "lucide-react";
 import Navbar from "@/components/navbar";
-import HeroCarousel from "@/components/hero-carousel";
-import ImpactSection from "@/components/impact-section";
-import ProgramsSection from "@/components/programs-section";
-import EventsSection from "@/components/events-section";
+// import HeroCarousel from "@/components/hero-carousel";
+// import ImpactSection from "@/components/impact-section";
+// import ProgramsSection from "@/components/programs-section";
+// import EventsSection from "@/components/events-section";
 import Footer from "@/components/footer";
+import ProgramsPage from "@/components/program-page";
+import dynamic from 'next/dynamic';
+import ImpactSectionSkeleton from "@/components/impact-section-skeleton";
+import ProgramsSectionSkeleton from "@/components/programs-section-skeleton";
+import EventsSectionSkeleton from "@/components/events-section-skeleton";
+import HeroCarouselSkeleton from "@/components/hero-carousel-skeleton";
 
+const HeroCarousel = dynamic(() => import('@/components/hero-carousel'), {
+  loading: () => <HeroCarouselSkeleton />,
+  ssr: true,
+});
+
+const ImpactSection = dynamic(() => import('@/components/impact-section'), {
+  loading: () => <ImpactSectionSkeleton />,
+  ssr: true,
+});
+
+const ProgramsSection = dynamic(() => import('@/components/programs-section'), {
+  loading: () => <ProgramsSectionSkeleton />,
+  ssr: true,
+});
+
+const EventsSection = dynamic(() => import('@/components/events-section'), {
+  loading: () => <EventsSectionSkeleton />,
+  ssr: true,
+});
 // Move this to a separate data file, e.g., lib/data.ts
 const carouselData = [
   {
@@ -39,12 +64,12 @@ const carouselData = [
 export default function Home() {
   return (
     <main className="min-h-screen">
-      {/* <Navbar /> */}
+      <Navbar />
       <HeroCarousel slides={carouselData} />
       <ImpactSection />
-      <ProgramsSection />
+      <ProgramsPage />
       <EventsSection />
-      {/* <Footer /> */}
+      <Footer />
     </main>
   );
 }

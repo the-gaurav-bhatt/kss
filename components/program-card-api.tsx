@@ -70,8 +70,8 @@ const programsData: Program[] = [
 export async function fetchProgramsData(): Promise<Program[]> {
   // You can add actual fetch/DB logic here if needed
   return new Promise((resolve) => {
-    setTimeout(() => {
+
       resolve(programsData);
-    }, 500); // simulate slow API
+
   });
 }

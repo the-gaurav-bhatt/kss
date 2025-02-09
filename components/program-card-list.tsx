@@ -1,8 +1,10 @@
-// app/programs/program-card-list.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { Book, Heart, Users, Lightbulb, Brain } from "lucide-react";
 import { Program } from "./types";
+import { motion, useInView } from "framer-motion"; // Import useInView
+import { useRef } from "react";
+
 const iconMap = {
   Book,
   Heart,
@@ -10,17 +12,62 @@ const iconMap = {
   Lightbulb,
   Brain,
 };
-export function ProgramCardList({ programs }: { programs: Program[] }) {
-  return (
-    <div
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10"
 
-    >
+const cardVariants = {
+    fadeScale: {
+        hidden: { opacity: 0, scale: 0.9 },
+        visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeInOut" } },
+        exit: { opacity: 0, scale: 0.9, transition: { duration: 0.3, ease: "easeInOut" } }
+    },
+    slideFade: {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeInOut" } },
+        exit: { opacity: 0, y: 20, transition: { duration: 0.3, ease: "easeInOut" } }
+    },
+    flip3D: {  // More complex, might need adjustment
+        hidden: { opacity: 0, rotateY: -90 },
+        visible: { opacity: 1, rotateY: 0, transition: { duration: 0.6, ease: "easeInOut" } },
+        exit: { opacity: 0, rotateY: 90, transition: { duration: 0.4, ease: "easeInOut" } }
+    },
+     bounceFade: {
+        hidden: { opacity: 0, scale: 0.8 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+              duration: 0.5
+            }
+        },
+        exit: { opacity: 0, scale: 0.8, transition: { duration: 0.3 } }
+    }
+};
+
+type AnimationType = "fadeScale" | "slideFade" | "flip3D" | "bounceFade";
+
+interface ProgramCardListProps {
+    programs: Program[];
+    animation?: AnimationType;
+}
+export function ProgramCardList({ programs, animation = "fadeScale" }: ProgramCardListProps) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
       {programs.map((program) => {
         const Icon = iconMap[program.iconName];
+        const ref = useRef(null);
+        const isInView = useInView(ref, { once: false, amount: 0.1 }); // Key change: useInView for each card
 
         return (
-          <div key={program.title} >
+          <motion.div
+            key={program.title}
+            ref={ref} // Attach the ref to each card
+            initial="hidden"
+            animate={isInView ? "visible" : "exit"} // Animate based on inView state
+            variants={cardVariants[animation]}
+            className="will-change-transform"
+          >
             <Link
               href={program.href}
               aria-label={`Read more about ${program.title}`}
@@ -46,7 +93,7 @@ export function ProgramCardList({ programs }: { programs: Program[] }) {
                 <p className="text-white/90">{program.description}</p>
               </div>
             </Link>
-          </div>
+          </motion.div>
         );
       })}
     </div>

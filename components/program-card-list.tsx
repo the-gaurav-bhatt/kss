@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import Link from "next/link";
 import { Book, Heart, Users, Lightbulb, Brain } from "lucide-react";
